@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
-BOOKS="$HOME/repo/books/"
+books="$HOME/repo/books"
+selection="$(ls $books | dmenu -l 10 -i)"
 
-( zathura "$BOOKS/$(ls $BOOKS | dmenu -l 10 -i)" > /dev/null 2>&1 & )
+[ "$selection" ] && ( zathura "$books/$selection" > /dev/null 2>&1 & ) || echo "$books/$selection"
 
