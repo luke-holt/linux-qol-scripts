@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+BOOKS="$HOME/repo/books/"
+
+( zathura "$BOOKS/$(ls $BOOKS | dmenu -l 10 -i)" > /dev/null 2>&1 & )
+
