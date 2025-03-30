@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+while true; do
+    xprop -root -set WM_NAME " $(date "+%a %h %d %Y %H:%M") "
+    sleep 60
+done
+

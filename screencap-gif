@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+TMPFILE="$(mktemp -t mkgif-XXXXXXXXXX).mkv"
+PALETTEFILE="$(mktemp -t mkgif-palette-XXXXXXXXXX).png"
+OUTPUTFILE="./$(date +%F-%H-%M-%S).gif"
+
+read -r X Y W H G ID < <(slop -f "%x %y %w %h %g %i" 2> /dev/null)
+ffmpeg -f x11grab -s "$W"x"$H" -i :0.0+$X,$Y "$TMPFILE"                             > /dev/null 2>&1
+ffmpeg -y -i "$TMPFILE"  -vf fps=30,palettegen "$PALETTEFILE"                       > /dev/null 2>&1
+ffmpeg -i "$TMPFILE" -i "$PALETTEFILE" -filter_complex "paletteuse" "$OUTPUTFILE"   > /dev/null 2>&1
+
+xclip -selection clipboard -t image/gif -i "$OUTPUTFILE"
+
+rm -f "$TMPFILE"
+rm -f "$PALETTEFILE"
+rm -f "$OUTPUTFILE"
